@@ -1,0 +1,17 @@
+{
+  "name": "com.spellboundar.cinematic-framing",
+  "version": "1.0.0",
+  "displayName": "Cinematic Framing",
+  "description": "Animated cinematic black-bar framing.",
+  "unity": "2019.1",
+  "keywords": [
+    "ui",
+    "vfx"
+  ],
+  "author": {
+    "name": "Chris Monteferrante",
+    "email": "chris@spellboundar.com",
+    "url": ""
+  },
+  "type": "tool"
+}
