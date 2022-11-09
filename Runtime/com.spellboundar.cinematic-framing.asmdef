@@ -1,3 +1,14 @@
 {
-	"name": "com.spellboundar.cinematic-framing"
+    "name": "com.spellboundar.cinematic-framing",
+    "rootNamespace": "SpellBoundAR.CinematicFraming",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -1,44 +1,47 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[DisallowMultipleComponent]
-[RequireComponent(typeof(Button))]
-public class ToggleCinematicFramingButton : MonoBehaviour
+namespace SpellBoundAR.CinematicFraming
 {
-    [Header("Settings")]
-    [SerializeField] private float animationSeconds = 1;
-    [SerializeField] private float aspectRatio = 1;
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(Button))]
+    public class ToggleCinematicFramingButton : MonoBehaviour
+    {
+        [Header("Settings")]
+        [SerializeField] private float animationSeconds = 1;
+        [SerializeField] private float aspectRatio = 1;
     
-    [Header("Cache")]
-    private Button _button;
-    private CinematicFraming _cinematicFraming;
+        [Header("Cache")]
+        private Button _button;
+        private global::SpellBoundAR.CinematicFraming.CinematicFraming _cinematicFraming;
 
-    private void Awake()
-    {
-        _button = GetComponent<Button>();
-    }
-
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnClick);
-    }
-
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnClick);
-    }
-
-    private void OnClick()
-    {
-        if (!_cinematicFraming)
+        private void Awake()
         {
-            _cinematicFraming = CinematicFraming.SpawnInstance(aspectRatio, animationSeconds);
+            _button = GetComponent<Button>();
         }
-        else
+
+        private void OnEnable()
         {
-            float seconds = _cinematicFraming.Disappear();
-            Destroy(_cinematicFraming.gameObject, seconds);
-            _cinematicFraming = null;
-        } 
+            _button.onClick.AddListener(OnClick);
+        }
+
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnClick);
+        }
+
+        private void OnClick()
+        {
+            if (!_cinematicFraming)
+            {
+                _cinematicFraming = global::SpellBoundAR.CinematicFraming.CinematicFraming.SpawnInstance(aspectRatio, animationSeconds);
+            }
+            else
+            {
+                float seconds = _cinematicFraming.Disappear();
+                Destroy(_cinematicFraming.gameObject, seconds);
+                _cinematicFraming = null;
+            } 
+        }
     }
 }
