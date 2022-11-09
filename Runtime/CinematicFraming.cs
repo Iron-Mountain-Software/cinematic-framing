@@ -29,17 +29,17 @@ namespace SpellBoundAR.CinematicFraming
         private float _animationSeconds;
         private float _aspectRatio;
 
-        [Header("Cache")]
-        private AspectRatioFitter _aspectRatioFitter;
-
+        public Canvas Canvas { get; private set; }
+        public AspectRatioFitter AspectRatioFitter { get; private set; }
+        
         public float AnimationSeconds => _animationSeconds;
         public float ScreenAspectRatio => (float) Screen.width / Screen.height;
-    
+        
         private void Awake()
         {
-            Canvas canvas = GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 2000;
+            Canvas = GetComponent<Canvas>();
+            Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            Canvas.sortingOrder = 2000;
         
             CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
             canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -71,9 +71,9 @@ namespace SpellBoundAR.CinematicFraming
             maskImage.color = Color.white;
             maskImage.raycastTarget = false;
             maskImage.material = GetMaskMaterial();
-            _aspectRatioFitter = maskGameObject.GetComponent<AspectRatioFitter>();
-            _aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
-            _aspectRatioFitter.enabled = false;
+            AspectRatioFitter = maskGameObject.GetComponent<AspectRatioFitter>();
+            AspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+            AspectRatioFitter.enabled = false;
         
             maskRectTransform.SetSiblingIndex(0);
             backgroundRectTransform.SetSiblingIndex(1);
@@ -83,8 +83,8 @@ namespace SpellBoundAR.CinematicFraming
         {
             _aspectRatio = aspectRatio;
             _animationSeconds = seconds;
-            _aspectRatioFitter.aspectRatio = ScreenAspectRatio;
-            _aspectRatioFitter.enabled = true;
+            AspectRatioFitter.aspectRatio = ScreenAspectRatio;
+            AspectRatioFitter.enabled = true;
             StartCoroutine(Animate(ScreenAspectRatio, _aspectRatio, _animationSeconds));
             return this;
         }
@@ -93,21 +93,21 @@ namespace SpellBoundAR.CinematicFraming
         {
             StopAllCoroutines();
             StartCoroutine(Animate(_aspectRatio, ScreenAspectRatio, _animationSeconds));
-            float progress = Mathf.InverseLerp(_aspectRatio, ScreenAspectRatio, _aspectRatioFitter.aspectRatio);
+            float progress = Mathf.InverseLerp(_aspectRatio, ScreenAspectRatio, AspectRatioFitter.aspectRatio);
             float animationSeconds = (1 - progress) * _animationSeconds;
             return animationSeconds;
         }
 
         private IEnumerator Animate(float startAspectRatio, float endAspectRatio, float seconds)
         {
-            float progress = Mathf.InverseLerp(startAspectRatio, endAspectRatio, _aspectRatioFitter.aspectRatio);
+            float progress = Mathf.InverseLerp(startAspectRatio, endAspectRatio, AspectRatioFitter.aspectRatio);
             for (float timer = progress * seconds; timer < seconds; timer += Time.unscaledDeltaTime)
             {
                 progress = timer / seconds;
-                _aspectRatioFitter.aspectRatio = Mathf.Lerp(startAspectRatio, endAspectRatio, progress);
+                AspectRatioFitter.aspectRatio = Mathf.Lerp(startAspectRatio, endAspectRatio, progress);
                 yield return null;
             }
-            _aspectRatioFitter.aspectRatio = endAspectRatio;
+            AspectRatioFitter.aspectRatio = endAspectRatio;
         }
 
         private Material GetMaskedMaterial()
