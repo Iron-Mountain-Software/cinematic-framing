@@ -1,6 +1,6 @@
 {
-    "name": "com.spellboundar.cinematic-framing",
-    "rootNamespace": "SpellBoundAR.CinematicFraming",
+    "name": "com.iron-mountain.cinematic-framing",
+    "rootNamespace": "IronMountain.CinematicFraming",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

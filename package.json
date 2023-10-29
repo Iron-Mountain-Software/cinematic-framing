@@ -1,22 +1,36 @@
 {
-  "name": "com.spellboundar.cinematic-framing",
+  "name": "com.iron-mountain.cinematic-framing",
   "version": "1.0.2",
   "displayName": "Cinematic Framing",
-  "description": "Animated cinematic black-bar framing.",
+  "author": "Chris Monteferrante <ludachrismonte@gmail.com>",
   "unity": "2019.1",
+  "type": "tool",
+  "license": "MIT",
+  "homepage": "https://github.com/Iron-Mountain-Software/cinematic-framing#readme",
+  "bugs": {
+    "type": "git",
+    "url": "https://github.com/Iron-Mountain-Software/cinematic-framing/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iron-Mountain-Software/cinematic-framing.git"
+  },
+  "description": "Animated cinematic black-bar framing.",
+  "useCases": [],
+  "directions": null,
   "keywords": [
     "ui",
     "vfx"
   ],
-  "author": "Chris Monteferrante <chris@spellboundar.com>",
-  "type": "tool",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SpellBoundAR-Packages/cinematic-framing.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SpellBoundAR-Packages/cinematic-framing/issues"
-  },
-  "homepage": "https://github.com/SpellBoundAR-Packages/cinematic-framing#readme"
+  "sources": [
+    {
+      "type": "itch.io",
+      "url": "https://iron-mountain.itch.io/cinematic-framing"
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/Iron-Mountain-Software/cinematic-framing"
+    }
+  ],
+  "dependencies": {}
 }

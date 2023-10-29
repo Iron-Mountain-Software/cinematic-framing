@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SpellBoundAR.CinematicFraming
+namespace IronMountain.CinematicFraming
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Canvas))]
@@ -19,10 +19,16 @@ namespace SpellBoundAR.CinematicFraming
         private static readonly int ColorMask = Shader.PropertyToID("_ColorMask");
         private static readonly int UseAlphaClip = Shader.PropertyToID("_UseUIAlphaClip");
 
-        public static CinematicFraming SpawnInstance(float aspectRatio = 16f / 9f, float animationSeconds = 1f)
+        public static CinematicFraming SpawnInstance(
+            float aspectRatio = 16f / 9f,
+            float animationSeconds = 1f,
+            Transform parent = null)
         {
             GameObject cinematicFramingGameObject = new GameObject("Cinematic Framing");
-            return cinematicFramingGameObject.AddComponent<CinematicFraming>().Initialize(aspectRatio, animationSeconds);
+            cinematicFramingGameObject.transform.parent = parent;
+            CinematicFraming cinematicFraming = cinematicFramingGameObject.AddComponent<CinematicFraming>();
+            cinematicFraming.Initialize(aspectRatio, animationSeconds);
+            return cinematicFraming;
         }
 
         [Header("Settings")]
@@ -79,31 +85,44 @@ namespace SpellBoundAR.CinematicFraming
             backgroundRectTransform.SetSiblingIndex(1);
         }
 
-        private CinematicFraming Initialize(float aspectRatio, float seconds)
+        private void Initialize(float aspectRatio, float seconds)
         {
             _aspectRatio = aspectRatio;
             _animationSeconds = seconds;
             AspectRatioFitter.aspectRatio = ScreenAspectRatio;
             AspectRatioFitter.enabled = true;
-            StartCoroutine(Animate(ScreenAspectRatio, _aspectRatio, _animationSeconds));
-            return this;
+            Appear();
+        }
+
+        public float Appear()
+        {
+            StopAllCoroutines();
+            float progress = Mathf.InverseLerp(ScreenAspectRatio, _aspectRatio, AspectRatioFitter.aspectRatio);
+            float animationSeconds = (1 - progress) * _animationSeconds;
+            StartCoroutine(Animate(
+                AspectRatioFitter.aspectRatio,
+                _aspectRatio,
+                animationSeconds));
+            return animationSeconds;
         }
 
         public float Disappear()
         {
             StopAllCoroutines();
-            StartCoroutine(Animate(_aspectRatio, ScreenAspectRatio, _animationSeconds));
             float progress = Mathf.InverseLerp(_aspectRatio, ScreenAspectRatio, AspectRatioFitter.aspectRatio);
             float animationSeconds = (1 - progress) * _animationSeconds;
+            StartCoroutine(Animate(
+                AspectRatioFitter.aspectRatio, 
+                ScreenAspectRatio,
+                animationSeconds));
             return animationSeconds;
         }
 
         private IEnumerator Animate(float startAspectRatio, float endAspectRatio, float seconds)
         {
-            float progress = Mathf.InverseLerp(startAspectRatio, endAspectRatio, AspectRatioFitter.aspectRatio);
-            for (float timer = progress * seconds; timer < seconds; timer += Time.unscaledDeltaTime)
+            for (float timer = 0f; timer < seconds; timer += Time.unscaledDeltaTime)
             {
-                progress = timer / seconds;
+                float progress = timer / seconds;
                 AspectRatioFitter.aspectRatio = Mathf.Lerp(startAspectRatio, endAspectRatio, progress);
                 yield return null;
             }
